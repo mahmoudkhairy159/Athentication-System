@@ -41,6 +41,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                              {{ $admins->links() }}
                         <!-- End Table with hoverable rows -->
                         @else
                         <h2>There is no admins yet! </h2>

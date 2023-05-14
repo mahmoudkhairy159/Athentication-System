@@ -60,6 +60,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $users->links() }}
+
                         <!-- End Table with hoverable rows -->
                         @else
                         <h2>There is no users yet! </h2>

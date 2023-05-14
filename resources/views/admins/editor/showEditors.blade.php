@@ -54,6 +54,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $editors->links() }}
+
                         <!-- End Table with hoverable rows -->
                         @else
                         <h2>There is no editors yet! </h2>
