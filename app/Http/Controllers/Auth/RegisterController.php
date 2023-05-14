@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminRegisterRequest;
+use App\Http\Requests\EditorRegisterRequest;
+use App\Models\Admin;
+use App\Models\Editor;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,14 +36,11 @@ class RegisterController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:admin');
+        $this->middleware('guest:editor');
     }
 
     /**
@@ -60,14 +62,50 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return \App\User
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        return $user;
+    }
+
+    public function showAdminRegisterForm()
+    {
+        return view('auth.register', ['url' => 'admin', 'title' => 'Admin']);
+    }
+
+
+    protected function createAdmin(AdminRegisterRequest $request)
+    {
+        $admin = Admin::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->intended('login/admin');
+    }
+    public function showEditorRegisterForm()
+    {
+        return view('auth.register', ['url' => 'editor', 'title' => 'editor']);
+    }
+
+
+    protected function createEditor(EditorRegisterRequest $request)
+    {
+        $trainer = Editor::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+
+
+        return redirect()->intended('login/editor');
     }
 }

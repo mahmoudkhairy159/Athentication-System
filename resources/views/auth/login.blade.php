@@ -5,10 +5,13 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-
+                <div class="card-header">{{ isset($title) ?ucwords($title) : '' }} {{ __('messages.Login') }}</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    @isset($url)
+                    <form method="POST" action='{{ url("login/".$url) }}' aria-label="{{ __('messages.Login') }}">
+                        @else
+                            <form method="POST" action="{{ route('login') }}" aria-label="{{ __('messages.Login') }}">
+                                @endisset
                         @csrf
 
                         <div class="row mb-3">
@@ -66,7 +69,11 @@
                         </div>
                     </form>
                 </div>
+                <a type="button" class="btn btn-lg btn-secondary  m-3" href="/login/editor" >LOGIN AS Editor</a>
+                <a type="button" class="btn btn-lg btn-light m-3" href="/login">LOGIN AS User</a>
+                <a type="button" class="btn btn-lg btn-success m-3"href="/login/admin" >LOGIN AS Admin</a>
             </div>
+
         </div>
     </div>
 </div>
